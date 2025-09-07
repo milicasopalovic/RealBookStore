@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.PreparedStatement;
+
 
 @Repository
 public class CommentRepository {
@@ -26,16 +28,18 @@ public class CommentRepository {
     }
 
     public void create(Comment comment) {
-        String query = "insert into comments(bookId, userId, comment) values (" + comment.getBookId() + ", " + comment.getUserId() + ", '" + comment.getComment() + "')";
-
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement();
-        ) {
-            statement.execute(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    String query = "insert into comments(bookId, userId, comment) values (?, ?, ?)";
+    try (Connection connection = dataSource.getConnection()) {
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setInt(1, comment.getBookId());
+        ps.setInt(2, comment.getUserId());
+        ps.setString(3, comment.getComment());
+        ps.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
+
 
     public List<Comment> getAll(int bookId) {
         List<Comment> commentList = new ArrayList<>();
