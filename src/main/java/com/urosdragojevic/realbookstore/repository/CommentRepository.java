@@ -36,7 +36,7 @@ public class CommentRepository {
         ps.setString(3, comment.getComment());
         ps.executeUpdate();
     } catch (SQLException e) {
-        e.printStackTrace();
+        LOG.error("Creating comment failed. ", e);
     }
 }
 
@@ -51,7 +51,7 @@ public class CommentRepository {
                 commentList.add(new Comment(rs.getInt(1), rs.getInt(2), rs.getString(3)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Getting all comments failed.", e);
         }
         return commentList;
     }

@@ -36,7 +36,7 @@ public class BookRepository {
                 bookList.add(book);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Failed to fetch all books", e);
         }
         return bookList;
     }
@@ -67,7 +67,7 @@ public class BookRepository {
                 return createBookFromResultSet(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Searching book failed.", e);
         }
         return null;
     }
@@ -94,12 +94,12 @@ public class BookRepository {
                         statement2.setInt(2, genre.getId());
                         statement2.executeUpdate();
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        LOG.error("Creating book failed.", e);
                     }
                 });
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Creating book failed.", e);
         }
         return id;
     }
@@ -117,7 +117,7 @@ public class BookRepository {
             statement.executeUpdate(query3);
             statement.executeUpdate(query4);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Deleting book by ID failed.", e);
         }
     }
 
